@@ -8,6 +8,9 @@
 ##  Descrição do Projeto
 Sistema de catalogação e gerenciamento de funcionários do RH.
 
+### Funcionamento do Sistema
+O projeto foi desenvolvido como uma aplicação web local utilizando o Flask. Isso significa que, embora a interface seja acessada e navegada pelo browser, o servidor roda inteiramente na máquina na qual o programa foi executado, processando as requisições e gerenciando o banco de dados localmente.
+
 ### Dados do Funcionário:
 - Nome e Sobrenome
 - Número de contato
