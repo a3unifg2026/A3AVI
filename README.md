@@ -26,3 +26,7 @@ Sistema de catalogação e gerenciamento de funcionários do RH.
 1. O sistema identifica a alteração de status da matrícula.
 2. Os acessos vinculados ao ID do funcionário são suspensos automaticamente.
 3. O log de desligamento é gerado para conferência do RH.
+
+
+Usuários Adms: alexandre, vitor, ighor
+Senha: a32026
