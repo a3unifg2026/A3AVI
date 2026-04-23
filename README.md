@@ -1,11 +1,11 @@
 # Projeto A3AVI - Gestão de Departamento de RH
 
-## 👥 Grupo
+##  Grupo
 * Alexandre Lucas
 * Vitor Silva
 * Ighor Eduardo
 
-## 📝 Descrição do Projeto
+##  Descrição do Projeto
 Sistema de catalogação e gerenciamento de funcionários do RH.
 
 ### Dados do Funcionário:
@@ -16,12 +16,12 @@ Sistema de catalogação e gerenciamento de funcionários do RH.
 - ID de Identificação (Automático)
 - Data de Admissão (Automática)
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 - **BackEnd:** Python
 - **FrontEnd:** HTML e CSS
 - **Banco de Dados:** SQL (Ligado ao Python)
 
-## 🔄 Fluxo de Caso de Uso (Exemplo)
+##  Fluxo de Caso de Uso (Exemplo)
 **Cenário: Desligamento/Matrícula Cancelada**
 1. O sistema identifica a alteração de status da matrícula.
 2. Os acessos vinculados ao ID do funcionário são suspensos automaticamente.
