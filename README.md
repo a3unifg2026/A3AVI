@@ -22,15 +22,15 @@ Siga os tópicos abaixo no terminal para configurar o ambiente e rodar a aplica�
 
 * **1. Ativar o Ambiente Virtual (Entrar no venv):**
   Identifique o sistema operacional e execute o comando correspondente para isolar as dependências:
-  * **macOS / Linux:** ```bash
+  * **macOS / Linux:** 
     source venv/bin/activate
-    ```
-  * **Windows (Prompt de Comando - CMD):** ```cmd
+    
+  * **Windows (Prompt de Comando - CMD):**
     venv\Scripts\activate
-    ```
-  * **Windows (PowerShell):** ```powershell
+    
+  * **Windows (PowerShell):**
     venv\Scripts\Activate.ps1
-    ```
+
 
 * **2. Inicializar o Servidor:**
   Com o terminal exibindo a tag `(venv)` no início da linha, execute o arquivo principal para subir o Flask:
