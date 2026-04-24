@@ -68,3 +68,7 @@ Usuários:
 
 Senha:
 a32026
+
+## Disclaimer:
+
+O arquivo rh.db acompanha o projeto contendo dados de demonstração utilizados durante o desenvolvimento e testes do sistema.
