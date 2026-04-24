@@ -59,5 +59,12 @@ Siga os tópicos abaixo no terminal para configurar o ambiente e rodar a aplica�
 3. O log de desligamento é gerado para conferência do RH.
 
 
-Usuários Adms: alexandre, vitor, ighor
-Senha: a32026
+## Credenciais de acesso
+
+Usuários:
+- alexandre
+- vitor
+- ighor
+
+Senha:
+a32026
