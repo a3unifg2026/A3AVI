@@ -49,7 +49,7 @@ Siga os t√≥picos abaixo no terminal para configurar o ambiente e rodar a aplica√
 
 ##  Tecnologias Utilizadas
 - **BackEnd:** Python
-- **FrontEnd:** HTML e CSS
+- **FrontEnd:** HTML, CSS e JavaScript
 - **Banco de Dados:** SQL (Ligado ao Python)
 
 ##  Fluxo de Caso de Uso (Exemplo)
