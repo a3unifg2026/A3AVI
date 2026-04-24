@@ -15,6 +15,8 @@ O projeto foi desenvolvido como uma aplicação web local utilizando o Flask. Is
 
 Siga os tópicos abaixo no terminal para configurar o ambiente e rodar a aplicação web localmente:
 
+(Primeiro, caso você não tenha o flask, abra o terminal e rode o comando: "pip install flask")
+
 * **0. Criar o Ambiente Virtual (Se necessário):**
   Caso o ambiente virtual ainda não tenha sido criado na máquina, execute o comando correspondente ao sistema operacional na raiz do projeto:
   * **macOS / Linux:** `python3 -m venv venv`
