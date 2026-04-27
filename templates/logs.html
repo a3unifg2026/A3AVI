@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<a href="/limpar_logs" onclick="return confirm('Tem certeza que deseja limpar todos os logs?')">
+    Limpar logs
+</a>
+
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Logs</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Histórico de Ações</h1>
+
+    {% for log in logs %}
+        <p>
+            <b>ID Func:</b> {{log[1]}} <br>
+            <b>Ação:</b> {{log[2]}} <br>
+            <b>Responsável:</b> {{log[3]}} <br>
+            <b>Data:</b> {{log[4]}}
+        </p>
+        <hr>
+    {% endfor %}
+
+    <a href="/home">Voltar</a>
+</div>
+
+</body>
+</html>

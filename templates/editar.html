@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+<h2>Editar</h2>
+<a href="/listar">Voltar</a>
+</div>
+
+<div class="container">
+<div class="card">
+
+<form method="POST">
+<input name="nome" value="{{ f[1] }}">
+<input name="contato" value="{{ f[2] }}">
+<input name="setor" value="{{ f[3] }}">
+<input name="salario" value="{{ f[4] }}">
+<button class="btn">Salvar</button>
+</form>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Funcionários</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Contato</th>
+            <th>Setor</th>
+            <th>Salário</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+
+        {% for f in funcionarios %}
+        <tr class="{% if f[5] == 'DESLIGADO' %}desligado{% endif %}">
+            <td>{{ f[0] }}</td>
+            <td>{{ f[1] }}</td>
+            <td>{{ f[2] }}</td>
+            <td>{{ f[3] }}</td>
+            <td>{{ f[4] }}</td>
+            <td>{{ f[5] }}</td>
+            <td>
+                <a href="/editar/{{ f[0] }}">Editar</a>
+                <a href="/desligar/{{ f[0] }}" onclick="return confirm('Tem certeza que deseja desligar este funcionário?')">
+                    Desligar
+                </a>
+                <a href="/deletar/{{ f[0] }}" onclick="return confirm('⚠️ Isso vai excluir permanentemente o funcionário. Deseja continuar?')">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/home">Voltar</a>
+</div>
+
+</body>
+</html>
