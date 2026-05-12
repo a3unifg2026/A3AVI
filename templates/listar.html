@@ -14,19 +14,22 @@
             <th>Nome</th>
             <th>Contato</th>
             <th>Setor</th>
+            <th>Email</th>
+            <th>Cargo</th>
             <th>Salário</th>
             <th>Status</th>
-            <th>Ações</th>
         </tr>
 
         {% for f in funcionarios %}
-        <tr class="{% if f[5] == 'DESLIGADO' %}desligado{% endif %}">
+        <tr class="{% if f[7] == 'DESLIGADO' %}desligado{% endif %}">
             <td>{{ f[0] }}</td>
             <td>{{ f[1] }}</td>
             <td>{{ f[2] }}</td>
             <td>{{ f[3] }}</td>
             <td>{{ f[4] }}</td>
             <td>{{ f[5] }}</td>
+            <td>{{ f[6] }}</td>
+            <td>{{ f[7] }}</td>
             <td>
                 <a href="/editar/{{ f[0] }}">Editar</a>
                 <a href="/desligar/{{ f[0] }}" onclick="return confirm('Tem certeza que deseja desligar este funcionário?')">
