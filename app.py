@@ -79,6 +79,8 @@ def cadastrar():
         nome = request.form["nome"]
         contato = request.form["contato"]
         setor = request.form["setor"]
+        email = request.form["email"]
+        cargo = request.form["cargo"]
         salario = request.form["salario"]
 
         conn = conectar()
@@ -87,9 +89,9 @@ def cadastrar():
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         cursor.execute("""
-        INSERT INTO funcionarios (nome, contato, setor, salario, data_admissao)
-        VALUES (?, ?, ?, ?, ?)
-        """, (nome, contato, setor, salario, data))
+        INSERT INTO funcionarios (nome, contato, setor, email, cargo, salario, data_admissao)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (nome, contato, setor, email, cargo, salario, data))
 
         func_id = cursor.lastrowid
 
@@ -134,13 +136,15 @@ def editar(id):
         nome = request.form["nome"]
         contato = request.form["contato"]
         setor = request.form["setor"]
+        email = request.form["email"]
+        cargo = request.form["cargo"]
         salario = request.form["salario"]
 
         cursor.execute("""
         UPDATE funcionarios
-        SET nome=?, contato=?, setor=?, salario=?
+        SET nome=?, contato=?, setor=?, email=?, cargo=?, salario=?
         WHERE id=?
-        """, (nome, contato, setor, salario, id))
+        """, (nome, contato, setor, email, cargo, salario, id))
 
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
