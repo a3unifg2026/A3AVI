@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/style.css">
+    <title>Cadastrar</title>
 </head>
 <body>
-
-<div class="container">
     <h2>Cadastrar Funcionário</h2>
-
     <form method="POST">
-        <input name="nome" placeholder="Nome">
-        <input name="contato" placeholder="Contato">
-        <input name="setor" placeholder="Setor">
-        <input name="email" placeholder="Email">
-        <input name="cargo" placeholder="Cargo">
-        <input name="salario" placeholder="Salário">
-        <button class="btn">Cadastrar</button>
+        <input type="text"
+        name="nome"
+        placeholder="Nome">
+        <br><br>
+        <input type="text"
+        name="contato"
+        placeholder="Contato">
+        <br><br>
+        <input type="text"
+        name="setor"
+        placeholder="Setor">
+        <br><br>
+        <input type="email"
+        name="email"
+        placeholder="Email">
+        <br><br>
+        <input type="text"
+        name="cargo"
+        placeholder="Cargo">
+        <br><br>
+        <input type="number"
+        name="salario"
+        placeholder="Salário">
+        <br><br>
+        <button type="submit">
+            Cadastrar
+        </button>
     </form>
-
+    <br>
     <a href="/home">Voltar</a>
-</div>
-
 </body>
 </html>

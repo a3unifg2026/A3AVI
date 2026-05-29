@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="/static/style.css">
+    <title>Avisos</title>
+</head>
+<body>
+    <h2>Avisos da Empresa</h2>
+    <form method="POST">
+        <input type="text"
+        name="titulo"
+        placeholder="Título">
+        <br><br>
+        <textarea
+        name="mensagem"
+        placeholder="Mensagem"></textarea>
+        <br><br>
+        <button type="submit">
+            Publicar
+        </button>
+    </form>
+    <hr>
+    {% for a in avisos %}
+        <h3>{{ a[1] }}</h3>
+        <p>{{ a[2] }}</p>
+        <small>
+            {{ a[3] }} -
+            {{ a[4] }}
+        </small>
+        <hr>
+    {% endfor %}
+    <a href="/home">Voltar</a>
+</body>
+</html>

@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="/static/style.css">
-    <title>INTERLANDIA LTDA</title>
+<link rel="stylesheet" href="/static/style.css">
+    <title>Home</title>
 </head>
 <body>
-
-<div class="container">
-    <h1>INTERLANDIA LTDA</h1>
-
-    <p style="text-align:center;">Bem-vindo, {{user}}</p>
-
-    <a href="/cadastrar">Cadastrar Funcionário</a>
-    <a href="/listar">Listar Funcionários</a>
-    <a href="/resumo">Ver Resumo</a>
-    <a href="/logs">Ver Logs</a>
-    <a href="/logout">Sair</a>
-</div>
-
-
-</button>
+    <h1>Sistema RH</h1>
+    <h3>Bem vindo {{ user }}</h3>
+    <a href="/cadastrar">
+        <button>Cadastrar Funcionário</button>
+    </a>
+    <br><br>
+    <a href="/listar">
+        <button>Listar Funcionários</button>
+    </a>
+    <br><br>
+    <a href="/setores">
+        <button>Setores</button>
+    </a>
+    <br><br>
+    <a href="/resumo">
+        <button>Resumo</button>
+    </a>
+    <br><br>
+    <a href="/logs">
+        <button>Logs</button>
+    </a>
+    <br><br>
+    <a href="/avisos">
+        <button>Avisos</button>
+    </a>
+    <br><br>
+    <a href="/logout">
+        <button>Sair</button>
+    </a>
 </body>
 </html>

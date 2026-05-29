@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="/static/style.css">
+    <title>Setores</title>
+</head>
+<body>
+    <h2>Funcionários por Setor</h2>
+    <table border="1">
+        <tr>
+            <th>Setor</th>
+            <th>Total</th>
+        </tr>
+        {% for s in setores %}
+        <tr>
+            <td>{{ s[0] }}</td>
+            <td>{{ s[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/home">Voltar</a>
+</body>
+</html>
