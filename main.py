@@ -1,307 +1,375 @@
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from datetime import datetime
-
+app = Flask(__name__)
+app.secret_key = "segredo"
 # =========================
-# BANCO DE DADOS
+# CONECTAR BANCO
 # =========================
-conn = sqlite3.connect("rh.db")
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS funcionarios (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    contato TEXT,
-    setor TEXT,
-    salario REAL,
-    status TEXT DEFAULT 'ATIVO',
-    data_admissao TEXT
-)
-""")
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    funcionario_id INTEGER,
-    acao TEXT,
-    responsavel TEXT,
-    data TEXT
-)
-""")
-
-conn.commit()
-
-usuario_logado = None
-
+def conectar():
+    return sqlite3.connect("rh.db")
 # =========================
-# LOG
+# CRIAR TABELAS
 # =========================
-def registrar_log(func_id, acao):
-    data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+def criar_tabelas():
+    conn = conectar()
+    cursor = conn.cursor()
+    # FUNCIONARIOS
     cursor.execute("""
-    INSERT INTO logs (funcionario_id, acao, responsavel, data)
-    VALUES (?, ?, ?, ?)
-    """, (func_id, acao, usuario_logado, data))
-
+    CREATE TABLE IF NOT EXISTS funcionarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT,
+        contato TEXT,
+        setor TEXT,
+        email TEXT,
+        cargo TEXT,
+        salario REAL,
+        status TEXT DEFAULT 'ATIVO',
+        data_admissao TEXT
+    )
+    """)
+    # LOGS
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        funcionario_id INTEGER,
+        acao TEXT,
+        responsavel TEXT,
+        data TEXT
+    )
+    """)
+    # AVISOS
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS avisos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT,
+        mensagem TEXT,
+        autor TEXT,
+        data TEXT
+    )
+    """)
+    conn.commit()
+    conn.close()
+criar_tabelas()
 # =========================
 # LOGIN
 # =========================
+@app.route("/", methods=["GET", "POST"])
 def login():
-    global usuario_logado
+    if request.method == "POST":
+        usuario = request.form["usuario"].lower()
+        senha = request.form["senha"]
+        if usuario in ["alexandre", "vitor", "ighor"] and senha == "a32026":
+            session["user"] = usuario
+            return redirect("/home")
+        else:
+            return "Acesso negado"
 
-    admins = ["alexandre", "vitor", "ighor"]
-    senha_correta = "a32026"
-
-    usuario = input("Usuário: ").strip().lower()
-    senha = input("Senha: ").strip()
-
-    if usuario in admins and senha == senha_correta:
-        usuario_logado = usuario.capitalize()
-        print(f"\nBem-vindo, {usuario_logado}!")
-        return True
-    else:
-        print("\nAcesso negado.")
-        return False
-
+    return render_template("login.html")
 # =========================
-# FORMATAR FUNCIONÁRIO
+# HOME
 # =========================
-def mostrar_funcionario(f):
-    print("\n--- Funcionário ---")
-    print(f"ID: {f[0]} | Nome: {f[1]} | Status: {f[5]}")
-    print(f"Setor: {f[3]} | Salário: R$ {f[4]:.2f}")
-    print(f"Contato: {f[2]} | Admissão: {f[6]}")
-    print("--------------------")
-
+@app.route("/home")
+def home():
+    if "user" not in session:
+        return redirect("/")
+    return render_template(
+        "index.html",
+        user=session["user"]
+    )
 # =========================
 # CADASTRAR
 # =========================
+@app.route("/cadastrar", methods=["GET", "POST"])
 def cadastrar():
-    nome = input("Nome: ").strip()
-    if not nome:
-        print("Nome não pode ser vazio.")
-        return
-
-    contato = input("Contato: ")
-    setor = input("Setor/Cargo: ")
-
-    try:
-        salario = float(input("Salário: "))
-    except ValueError:
-        print("Salário inválido.")
-        return
-
-    data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+    if "user" not in session:
+        return redirect("/")
+    if request.method == "POST":
+        nome = request.form["nome"]
+        contato = request.form["contato"]
+        setor = request.form["setor"]
+        email = request.form["email"]
+        cargo = request.form["cargo"]
+        salario = request.form["salario"]
+        data = datetime.now().strftime("%d/%m/%Y %H:%M")
+        conn = conectar()
+        cursor = conn.cursor()
+        cursor.execute("""
+        INSERT INTO funcionarios
+        (nome, contato, setor, email, cargo, salario, data_admissao)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            nome,
+            contato,
+            setor,
+            email,
+            cargo,
+            salario,
+            data
+        ))
+        funcionario_id = cursor.lastrowid
+        # LOG
+        cursor.execute("""
+        INSERT INTO logs
+        (funcionario_id, acao, responsavel, data)
+        VALUES (?, ?, ?, ?)
+        """, (
+            funcionario_id,
+            "CADASTRO",
+            session["user"],
+            data
+        ))
+        conn.commit()
+        conn.close()
+        return redirect("/listar")
+    return render_template("cadastrar.html")
+# =========================
+# LISTAR
+# =========================
+@app.route("/listar")
+def listar():
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
     cursor.execute("""
-    INSERT INTO funcionarios (nome, contato, setor, salario, data_admissao)
-    VALUES (?, ?, ?, ?, ?)
-    """, (nome, contato, setor, salario, data))
-
-    func_id = cursor.lastrowid
-    registrar_log(func_id, f"CADASTRO de {nome}")
-
-    conn.commit()
-    print(f"Funcionário {nome} cadastrado com ID {func_id}!")
-
-# =========================
-# CONSULTAR
-# =========================
-def consultar():
-    try:
-        id_func = int(input("ID do funcionário: "))
-    except ValueError:
-        print("ID inválido.")
-        return
-
-    cursor.execute("SELECT * FROM funcionarios WHERE id = ?", (id_func,))
-    f = cursor.fetchone()
-
-    if f:
-        mostrar_funcionario(f)
-    else:
-        print("Funcionário não encontrado.")
-
-# =========================
-# LISTAR TODOS
-# =========================
-def listar_todos():
-    cursor.execute("SELECT * FROM funcionarios ORDER BY id ASC")
+    SELECT * FROM funcionarios
+    ORDER BY id DESC
+    """)
     funcionarios = cursor.fetchall()
-
-    if not funcionarios:
-        print("Nenhum funcionário cadastrado.")
-        return
-
-    for f in funcionarios:
-        mostrar_funcionario(f)
-
+    conn.close()
+    return render_template(
+        "listar.html",
+        funcionarios=funcionarios
+    )
 # =========================
-# ATUALIZAR
+# EDITAR
 # =========================
-def atualizar():
-    try:
-        id_func = int(input("ID para atualizar: "))
-    except ValueError:
-        print("ID inválido.")
-        return
-
-    cursor.execute("SELECT * FROM funcionarios WHERE id = ?", (id_func,))
-    f = cursor.fetchone()
-
-    if not f:
-        print("Funcionário não encontrado.")
-        return
-
-    if f[5] == "DESLIGADO":
-        print("Funcionário já está desligado. Não pode ser editado.")
-        return
-
-    print(f"Editando: {f[1]}")
-
-    nome = input("Novo nome (Enter para manter): ") or f[1]
-    contato = input("Novo contato (Enter para manter): ") or f[2]
-    setor = input("Novo setor (Enter para manter): ") or f[3]
-
-    salario_str = input("Novo salário (Enter para manter): ")
-
-    try:
-        salario = float(salario_str) if salario_str else f[4]
-    except ValueError:
-        print("Salário inválido.")
-        return
-
+@app.route("/editar/<int:id>", methods=["GET", "POST"])
+def editar(id):
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    if request.method == "POST":
+        nome = request.form["nome"]
+        contato = request.form["contato"]
+        setor = request.form["setor"]
+        email = request.form["email"]
+        cargo = request.form["cargo"]
+        salario = request.form["salario"]
+        cursor.execute("""
+        UPDATE funcionarios
+        SET nome=?,
+            contato=?,
+            setor=?,
+            email=?,
+            cargo=?,
+            salario=?
+        WHERE id=?
+        """, (
+            nome,
+            contato,
+            setor,
+            email,
+            cargo,
+            salario,
+            id
+        ))
+        data = datetime.now().strftime("%d/%m/%Y %H:%M")
+        # LOG
+        cursor.execute("""
+        INSERT INTO logs
+        (funcionario_id, acao, responsavel, data)
+        VALUES (?, ?, ?, ?)
+        """, (
+            id,
+            "ATUALIZOU",
+            session["user"],
+            data
+        ))
+        conn.commit()
+        conn.close()
+        return redirect("/listar")
+    cursor.execute("""
+    SELECT * FROM funcionarios
+    WHERE id=?
+    """, (id,))
+    funcionario = cursor.fetchone()
+    conn.close()
+    return render_template(
+        "editar.html",
+        funcionario=funcionario
+    )
+# =========================
+# DESLIGAR
+# =========================
+@app.route("/desligar/<int:id>")
+def desligar(id):
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
     cursor.execute("""
     UPDATE funcionarios
-    SET nome=?, contato=?, setor=?, salario=?
+    SET status='DESLIGADO'
     WHERE id=?
-    """, (nome, contato, setor, salario, id_func))
-
-    registrar_log(id_func, f"ATUALIZAÇÃO por {usuario_logado}")
-
+    """, (id,))
+    data = datetime.now().strftime("%d/%m/%Y %H:%M")
+    # LOG
+    cursor.execute("""
+    INSERT INTO logs
+    (funcionario_id, acao, responsavel, data)
+    VALUES (?, ?, ?, ?)
+    """, (
+        id,
+        "DESLIGOU",
+        session["user"],
+        data
+    ))
     conn.commit()
-    print("Dados atualizados com sucesso!")
-
+    conn.close()
+    return redirect("/listar")
 # =========================
-# DESLIGAMENTO
+# DELETAR
 # =========================
-def desligar():
-    try:
-        id_func = int(input("ID para desligamento: "))
-    except ValueError:
-        print("ID inválido.")
-        return
-
-    cursor.execute("SELECT * FROM funcionarios WHERE id = ?", (id_func,))
-    f = cursor.fetchone()
-
-    if not f:
-        print("Funcionário não encontrado.")
-        return
-
-    if f[5] == "DESLIGADO":
-        print("Funcionário já está desligado.")
-        return
-
-    motivo = input("Motivo do desligamento: ")
-
-    cursor.execute("UPDATE funcionarios SET status='DESLIGADO' WHERE id=?", (id_func,))
-    registrar_log(id_func, f"DESLIGAMENTO: {motivo}")
-
+@app.route("/deletar/<int:id>")
+def deletar(id):
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+    DELETE FROM funcionarios
+    WHERE id=?
+    """, (id,))
     conn.commit()
-    print(f"Funcionário {f[1]} desligado com sucesso.")
-
+    conn.close()
+    return redirect("/listar")
 # =========================
-# MOSTRAR LOGS
+# LOGS
 # =========================
-def mostrar_logs():
-    cursor.execute("SELECT * FROM logs ORDER BY id ASC")
+@app.route("/logs")
+def logs():
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT * FROM logs
+    ORDER BY id DESC
+    """)
     logs = cursor.fetchall()
-
-    if not logs:
-        print("Nenhum log registrado.")
-        return
-
-    print("\n--- LOGS ---")
-    for log in logs:
-        print(f"Func ID {log[1]} | {log[2]} | Por: {log[3]} | Data: {log[4]}")
-    print("-------------")
-
-# =========================
-# LOGS POR FUNCIONÁRIO
-# =========================
-def logs_por_funcionario():
-    try:
-        id_func = int(input("ID do funcionário: "))
-    except ValueError:
-        print("ID inválido.")
-        return
-
-    cursor.execute("SELECT * FROM logs WHERE funcionario_id=? ORDER BY id ASC", (id_func,))
-    logs = cursor.fetchall()
-
-    if not logs:
-        print("Nenhum log encontrado para esse funcionário.")
-        return
-
-    for log in logs:
-        print(f"{log[2]} | Por: {log[3]} | Data: {log[4]}")
-
+    conn.close()
+    return render_template(
+        "logs.html",
+        logs=logs
+    )
 # =========================
 # RESUMO
 # =========================
+@app.route("/resumo")
 def resumo():
-    cursor.execute("SELECT COUNT(*) FROM funcionarios")
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT COUNT(*) FROM funcionarios
+    """)
     total = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM funcionarios WHERE status='ATIVO'")
+    cursor.execute("""
+    SELECT COUNT(*) FROM funcionarios
+    WHERE status='ATIVO'
+    """)
     ativos = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM funcionarios WHERE status='DESLIGADO'")
+    cursor.execute("""
+    SELECT COUNT(*) FROM funcionarios
+    WHERE status='DESLIGADO'
+    """)
     desligados = cursor.fetchone()[0]
-
-    print("\n--- RESUMO ---")
-    print(f"Total: {total}")
-    print(f"Ativos: {ativos}")
-    print(f"Desligados: {desligados}")
-    print("----------------")
-
+    conn.close()
+    return render_template(
+        "resumo.html",
+        total=total,
+        ativos=ativos,
+        desligados=desligados
+    )
 # =========================
-# MENU
+# SETORES
 # =========================
-def menu():
-    while True:
-        print("\n--- PAINEL RH IACorp ---")
-        print("1 - Cadastrar Funcionário")
-        print("2 - Consultar por ID")
-        print("3 - Listar Todos")
-        print("4 - Atualizar Cadastro")
-        print("5 - Desligar Funcionário")
-        print("6 - Ver Logs")
-        print("7 - Logs por Funcionário")
-        print("8 - Ver Resumo")
-        print("9 - Sair")
-
-        op = input("Escolha: ")
-
-        if op == "1": cadastrar()
-        elif op == "2": consultar()
-        elif op == "3": listar_todos()
-        elif op == "4": atualizar()
-        elif op == "5": desligar()
-        elif op == "6": mostrar_logs()
-        elif op == "7": logs_por_funcionario()
-        elif op == "8": resumo()
-        elif op == "9": break
-        else: print("Opção inválida.")
-
+@app.route("/setores")
+def setores():
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT setor, COUNT(*)
+    FROM funcionarios
+    WHERE status='ATIVO'
+    GROUP BY setor
+    """)
+    setores = cursor.fetchall()
+    conn.close()
+    return render_template(
+        "setores.html",
+        setores=setores
+    )
 # =========================
-# EXECUÇÃO
+# AVISOS
+# =========================
+@app.route("/avisos", methods=["GET", "POST"])
+def avisos():
+    if "user" not in session:
+        return redirect("/")
+    conn = conectar()
+    cursor = conn.cursor()
+    if request.method == "POST":
+        titulo = request.form["titulo"]
+        mensagem = request.form["mensagem"]
+        data = datetime.now().strftime("%d/%m/%Y %H:%M")
+        cursor.execute("""
+        INSERT INTO avisos
+        (titulo, mensagem, autor, data)
+        VALUES (?, ?, ?, ?)
+        """, (
+            titulo,
+            mensagem,
+            session["user"],
+            data
+        ))
+        conn.commit()
+    cursor.execute("""
+    SELECT * FROM avisos
+    ORDER BY id DESC
+    """)
+    avisos = cursor.fetchall()
+    conn.close()
+    return render_template(
+        "avisos.html",
+        avisos=avisos
+    )
+# =========================
+# LIMPAR LOGS
+# =========================
+@app.route("/limpar_logs")
+def limpar_logs():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM logs")
+    conn.commit()
+    conn.close()
+    return redirect("/logs")
+# =========================
+# LOGOUT
+# =========================
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+# =========================
+# INICIAR
 # =========================
 if __name__ == "__main__":
-    try:
-        if login():
-            menu()
-    finally:
-        conn.close()
+    app.run(debug=True)
