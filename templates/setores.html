@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
+<head>
     <title>Setores</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Funcionários por Setor</h2>
-    <table border="1">
-        <tr>
-            <th>Setor</th>
-            <th>Total</th>
-        </tr>
-        {% for s in setores %}
-        <tr>
-            <td>{{ s[0] }}</td>
-            <td>{{ s[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <br>
-    <a href="/home">Voltar</a>
+
+<div class="container">
+
+    <div class="topbar">
+        <h1>Setores</h1>
+        <a href="/home" style="color:#c4b5fd;">Voltar</a>
+    </div>
+
+    <div class="box">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Setor</th>
+                    <th>Total de Funcionários</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for s in setores %}
+                <tr>
+                    <td>{{ s[0] }}</td>
+                    <td>{{ s[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
 </body>
 </html>

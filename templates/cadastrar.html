@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
-    <title>Cadastrar</title>
+<head>
+    <title>Cadastrar Funcionário</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* Inputs e textarea escuros */
+        input, textarea {
+            background: #3b1f6b;
+            color: #e9d5ff;
+            border: 1px solid #4c1d95;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #c4b5fd;
+        }
+
+        button {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #6b21a8;
+        }
+    </style>
 </head>
 <body>
-    <h2>Cadastrar Funcionário</h2>
-    <form method="POST">
-        <input type="text"
-        name="nome"
-        placeholder="Nome">
-        <br><br>
-        <input type="text"
-        name="contato"
-        placeholder="Contato">
-        <br><br>
-        <input type="text"
-        name="setor"
-        placeholder="Setor">
-        <br><br>
-        <input type="email"
-        name="email"
-        placeholder="Email">
-        <br><br>
-        <input type="text"
-        name="cargo"
-        placeholder="Cargo">
-        <br><br>
-        <input type="number"
-        name="salario"
-        placeholder="Salário">
-        <br><br>
-        <button type="submit">
-            Cadastrar
-        </button>
-    </form>
-    <br>
-    <a href="/home">Voltar</a>
+
+<div class="container" style="max-width: 600px;">
+
+    <div class="topbar">
+        <h1>Cadastrar Funcionário</h1>
+        <a href="/listar" style="color: #c4b5fd;">Voltar</a>
+    </div>
+
+    <div class="box">
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="text" name="nome" placeholder="Nome" required>
+            <input type="text" name="contato" placeholder="Contato">
+            <input type="text" name="setor" placeholder="Setor">
+            <input type="email" name="email" placeholder="Email">
+            <input type="text" name="cargo" placeholder="Cargo">
+            <input type="number" name="salario" placeholder="Salário" step="0.01">
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+</div>
+
 </body>
 </html>

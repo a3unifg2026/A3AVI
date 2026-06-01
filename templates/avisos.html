@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
+<head>
     <title>Avisos</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* FORÇA O TEXTO VISÍVEL EM INPUT/TEXTAREA */
+        input, textarea {
+            background: #3b1f6b;
+            color: #e9d5ff;
+            border: 1px solid #4c1d95;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: #c4b5fd;
+        }
+
+        button {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #6b21a8;
+        }
+    </style>
 </head>
 <body>
-    <h2>Avisos da Empresa</h2>
-    <form method="POST">
-        <input type="text"
-        name="titulo"
-        placeholder="Título">
-        <br><br>
-        <textarea
-        name="mensagem"
-        placeholder="Mensagem"></textarea>
-        <br><br>
-        <button type="submit">
-            Publicar
-        </button>
-    </form>
-    <hr>
+<div class="container">
+
+    <div class="topbar">
+        <h1>Avisos</h1>
+        <a href="/home" style="color:#c4b5fd;">Voltar</a>
+    </div>
+
+    <!-- Formulário para criar aviso -->
+    <div class="box" style="margin-bottom: 30px;">
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input name="titulo" placeholder="Título do Aviso" required>
+            <textarea name="mensagem" placeholder="Mensagem do Aviso" required style="height: 100px;"></textarea>
+            <button type="submit">Publicar</button>
+        </form>
+    </div>
+
+    <!-- Lista de avisos -->
     {% for a in avisos %}
-        <h3>{{ a[1] }}</h3>
-        <p>{{ a[2] }}</p>
-        <small>
-            {{ a[3] }} -
-            {{ a[4] }}
-        </small>
-        <hr>
+    <div class="box" style="margin-bottom: 15px;">
+        <h3 style="color:#d8b4fe;">{{ a[1] }}</h3>
+        <p style="color:#e9d5ff;">{{ a[2] }}</p>
+        <small style="color:#c4b5fd;">{{ a[3] }} - {{ a[4] }}</small>
+    </div>
     {% endfor %}
-    <a href="/home">Voltar</a>
+
+</div>
 </body>
 </html>

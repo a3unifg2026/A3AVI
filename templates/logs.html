@@ -1,33 +1,54 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
-    <title>Logs</title>
+<head>
+    <title>Logs do Sistema</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Logs</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Funcionário</th>
-            <th>Ação</th>
-            <th>Responsável</th>
-            <th>Data</th>
-        </tr>
-        {% for l in logs %}
-        <tr>
-            <td>{{ l[0] }}</td>
-            <td>{{ l[1] }}</td>
-            <td>{{ l[2] }}</td>
-            <td>{{ l[3] }}</td>
-            <td>{{ l[4] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <br>
-    <a href="/limpar_logs">
-        <button>Limpar Logs</button>
-    </a>
-    <br><br>
-    <a href="/home">Voltar</a>
+
+<div class="container">
+
+    <div class="titulo-box">
+        <h3>Logs do Sistema</h3>
+        <a href="/limpar_logs"><button>Limpar Logs</button></a>
+    </div>
+
+    <div class="box">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Funcionário ID</th>
+                    <th>Ação</th>
+                    <th>Responsável</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0] }}</td>
+                    <td>{{ log[1] }}</td>
+                    <td>
+                        {% if log[2] == "CADASTRO" %}
+                            <span class="badge ativo">{{ log[2] }}</span>
+                        {% elif log[2] == "ATUALIZOU" %}
+                            <span class="badge" style="background:#facc15; color:black;">{{ log[2] }}</span>
+                        {% elif log[2] == "DESLIGOU" %}
+                            <span class="badge desligado">{{ log[2] }}</span>
+                        {% else %}
+                            <span class="badge" style="background:#6b7280;">{{ log[2] }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ log[3] }}</td>
+                    <td>{{ log[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
 </body>
 </html>
