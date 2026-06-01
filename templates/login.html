@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
-    <title>Login</title>
+<head>
+    <title>Login RH</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="POST">
-        <input type="text"
-        name="usuario"
-        placeholder="Usuário">
-        <br><br>
-        <input type="password"
-        name="senha"
-        placeholder="Senha">
-        <br><br>
-        <button type="submit">
-            Entrar
-        </button>
-    </form>
+    <div class="container" style="max-width: 400px;">
+        <div class="topbar">
+            <h1>Login RH</h1>
+        </div>
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="text" name="usuario" placeholder="Usuário" required style="padding: 10px; border-radius: 10px; border: 1px solid #4c1d95;">
+            <input type="password" name="senha" placeholder="Senha" required style="padding: 10px; border-radius: 10px; border: 1px solid #4c1d95;">
+            <button type="submit" style="background: #7c3aed; color: white; padding: 10px; border-radius: 10px; cursor: pointer;">Entrar</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
-    <title>Editar</title>
+<head>
+    <title>Editar Funcionário</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h2>Editar Funcionário</h2>
-    <form method="POST">
-        <input type="text"
-        name="nome"
-        value="{{ funcionario[1] }}">
-        <br><br>
-        <input type="text"
-        name="contato"
-        value="{{ funcionario[2] }}">
-        <br><br>
-        <input type="text"
-        name="setor"
-        value="{{ funcionario[3] }}">
-        <br><br>
-        <input type="email"
-        name="email"
-        value="{{ funcionario[4] }}">
-        <br><br>
-        <input type="text"
-        name="cargo"
-        value="{{ funcionario[5] }}">
-        <br><br>
-        <input type="number"
-        step="0.01"
-        name="salario"
-        value="{{ funcionario[6] }}">
-        <br><br>
-        <button type="submit">
-            Salvar
-        </button>
-    </form>
-    <br>
-    <a href="/listar">Voltar</a>
+<div class="container">
+    <div class="topbar">
+        <h1>Editar Funcionário</h1>
+        <a href="/listar" style="color: #c4b5fd;">Voltar</a>
+    </div>
+
+    <div class="box">
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input name="nome" value="{{ funcionario[1] }}">
+            <input name="contato" value="{{ funcionario[2] }}">
+            <input name="setor" value="{{ funcionario[3] }}">
+            <input name="email" value="{{ funcionario[4] }}">
+            <input name="cargo" value="{{ funcionario[5] }}">
+            <input name="salario" value="{{ funcionario[6] }}">
+            <button type="submit">Atualizar</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
