@@ -1,45 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home RH</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="topbar">
-            <h1>Bem-vindo, {{ user }}</h1>
-            <div class="perfil">
-                <img src="https://via.placeholder.com/45" alt="Perfil">
-            </div>
-        </div>
-
-        <div class="cards">
-            <div class="card">
-                <span>Funcionários</span>
-                <h2><a href="/listar" style="color: inherit; text-decoration: none;">Listar</a></h2>
-                <small>Gerenciar todos os funcionários</small>
-            </div>
-            <div class="card">
-                <span>Resumo</span>
-                <h2><a href="/resumo" style="color: inherit; text-decoration: none;">Resumo</a></h2>
-                <small>Visão geral da empresa</small>
-            </div>
-            <div class="card">
-                <span>Setores</span>
-                <h2><a href="/setores" style="color: inherit; text-decoration: none;">Setores</a></h2>
-                <small>Visualizar setores ativos</small>
-            </div>
-            <div class="card">
-                <span>Avisos</span>
-                <h2><a href="/avisos" style="color: inherit; text-decoration: none;">Avisos</a></h2>
-                <small>Publicar mensagens importantes</small>
-            </div>
-            <div class="card">
-                <span>Logs</span>
-                <h2><a href="/logs" style="color: inherit; text-decoration: none;">Logs</a></h2>
-                <small>Histórico de ações</small>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>Página Inicial (Home)</h2>
+<p>Olá, <strong>{{ user }}</strong>! Você entrou no sistema da Interlândia com sucesso.</p>
+<div style="background-color: #f9f9f9; padding: 20px; border: 1px dashed black; margin-top: 20px;">
+    <h3>Instruções de Uso para o RH:</h3>
+    <p>Use o menu do lado esquerdo para navegar pelas telas. Você pode cadastrar funcionários, ver a lista, gerenciar os setores e dar uma olhada nos logs de auditoria do banco de dados.</p>
+</div>
+{% endblock %}

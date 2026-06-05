@@ -1,54 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Logs do Sistema</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
-<div class="container">
-
-    <div class="titulo-box">
-        <h3>Logs do Sistema</h3>
-        <a href="/limpar_logs"><button>Limpar Logs</button></a>
-    </div>
-
-    <div class="box">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Funcionário ID</th>
-                    <th>Ação</th>
-                    <th>Responsável</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                <tr>
-                    <td>{{ log[0] }}</td>
-                    <td>{{ log[1] }}</td>
-                    <td>
-                        {% if log[2] == "CADASTRO" %}
-                            <span class="badge ativo">{{ log[2] }}</span>
-                        {% elif log[2] == "ATUALIZOU" %}
-                            <span class="badge" style="background:#facc15; color:black;">{{ log[2] }}</span>
-                        {% elif log[2] == "DESLIGOU" %}
-                            <span class="badge desligado">{{ log[2] }}</span>
-                        {% else %}
-                            <span class="badge" style="background:#6b7280;">{{ log[2] }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ log[3] }}</td>
-                    <td>{{ log[4] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
+{% extends 'base.html' %}
+{% block conteudo %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 10px;">
+    <h2 style="margin: 0;">🔍 Logs de Auditoria do Sistema</h2>
+    <a href="/limpar_logs" onclick="return confirm('Aviso: Isso vai apagar todo o histórico de logs para sempre! Quer continuar mesmo?')" style="background: red; color: white; text-decoration: none; padding: 10px; font-weight: bold; border: 1px solid black;">🧹 Limpar Tudo</a>
 </div>
-
-</body>
-</html>
+<table>
+    <thead>
+        <tr>
+            <th>ID Log</th>
+            <th>ID Funcionário</th>
+            <th>Ação Que Fez</th>
+            <th>Quem Fez (Usuário)</th>
+            <th>Data e Hora</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if logs %}
+            {% for log in logs %}
+            <tr>
+                <td>#{{ log[0] }}</td>
+                <td>{{ log[1] }}</td>
+                <td><strong>{{ log[2] }}</strong></td>
+                <td>{{ log[3] }}</td>
+                <td>{{ log[4] }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: gray; padding: 20px;">Nenhum registro de log encontrado no banco de dados ainda.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}
