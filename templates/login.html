@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Login RH</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Interlândia - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <div class="container" style="max-width: 400px;">
-        <div class="topbar">
-            <h1>Login RH</h1>
-        </div>
-        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-            <input type="text" name="usuario" placeholder="Usuário" required style="padding: 10px; border-radius: 10px; border: 1px solid #4c1d95;">
-            <input type="password" name="senha" placeholder="Senha" required style="padding: 10px; border-radius: 10px; border: 1px solid #4c1d95;">
-            <button type="submit" style="background: #7c3aed; color: white; padding: 10px; border-radius: 10px; cursor: pointer;">Entrar</button>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #e6e6e6;">
+    <div style="background-color: white; padding: 30px; border: 3px solid black; text-align: center; width: 300px;">
+        <h2>Interlândia LTDA</h2>
+        <p>Sistema de Gestão de RH</p>
+        <form action="/" method="POST">
+            <input type="text" name="usuario" placeholder="Digite seu usuário (Ex: vitor)" required style="width: 90%; padding: 5px; margin-bottom: 10px;">
+            <input type="password" name="senha" placeholder="Digite sua senha" required style="width: 90%; padding: 5px; margin-bottom: 15px;">
+            <button type="submit" style="width: 95%; background-color: #0000ff; color: white; padding: 10px; font-weight: bold; cursor: pointer;">ENTRAR NO SISTEMA</button>
         </form>
     </div>
 </body>

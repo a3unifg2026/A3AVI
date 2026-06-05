@@ -1,62 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Avisos</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <style>
-        /* FORÇA O TEXTO VISÍVEL EM INPUT/TEXTAREA */
-        input, textarea {
-            background: #3b1f6b;
-            color: #e9d5ff;
-            border: 1px solid #4c1d95;
-            border-radius: 10px;
-            padding: 10px;
-        }
-        input::placeholder,
-        textarea::placeholder {
-            color: #c4b5fd;
-        }
+{% extends 'base.html' %}
 
-        button {
-            background: #7c3aed;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background: #6b21a8;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
+{% block conteudo %}
+<h2>📢 Quadro de Avisos Corporativos</h2>
 
-    <div class="topbar">
-        <h1>Avisos</h1>
-        <a href="/home" style="color:#c4b5fd;">Voltar</a>
-    </div>
+<style>
+    .form-aviso { margin-bottom: 40px; background: #f8f9fa; padding: 20px; border-radius: 6px; border: 1px solid #e9ecef; }
+    .form-aviso input[type="text"], .form-aviso textarea { width: 100%; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+    .form-aviso button { background: #2c3e50; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: 0.3s; }
+    .form-aviso button:hover { background: #34495e; }
+    .card-aviso { background: #fff; border-left: 5px solid #3498db; padding: 20px; margin-bottom: 15px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-top: 1px solid #f1f2f6; border-right: 1px solid #f1f2f6; border-bottom: 1px solid #f1f2f6; }
+    .card-aviso h4 { margin: 0 0 10px 0; color: #2c3e50; font-size: 18px; }
+    .card-aviso p { margin: 0 0 15px 0; color: #555; line-height: 1.6; }
+    .card-aviso small { color: #7f8c8d; font-size: 12px; }
+</style>
 
-    <!-- Formulário para criar aviso -->
-    <div class="box" style="margin-bottom: 30px;">
-        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-            <input name="titulo" placeholder="Título do Aviso" required>
-            <textarea name="mensagem" placeholder="Mensagem do Aviso" required style="height: 100px;"></textarea>
-            <button type="submit">Publicar</button>
-        </form>
-    </div>
+<div class="form-aviso">
+    <h3>Publicar Novo Comunicado</h3>
+    <form action="/avisos" method="POST">
+        <label>Título do Aviso:</label>
+        <input type="text" name="titulo" placeholder="Ex: Manutenção do Sistema, Uso de EPI..." required>
+        
+        <label>Mensagem / Conteúdo:</label>
+        <textarea name="mensagem" rows="4" placeholder="Escreva aqui o comunicado para os funcionários..." required></textarea>
+        
+        <button type="submit">Publicar no Painel</button>
+    </form>
+</div>
 
-    <!-- Lista de avisos -->
-    {% for a in avisos %}
-    <div class="box" style="margin-bottom: 15px;">
-        <h3 style="color:#d8b4fe;">{{ a[1] }}</h3>
-        <p style="color:#e9d5ff;">{{ a[2] }}</p>
-        <small style="color:#c4b5fd;">{{ a[3] }} - {{ a[4] }}</small>
+<h3>Histórico de Avisos Ativos</h3>
+{% if avisos %}
+    {% for av in avisos %}
+    <div class="card-aviso">
+        <h4>{{ av[1] }}</h4>
+        <p>{{ av[2] }}</p>
+        <small>✍️ Autor: <strong>{{ av[3] }}</strong> | 📅 Data: {{ av[4] }}</small>
     </div>
     {% endfor %}
-
-</div>
-</body>
-</html>
+{% else %}
+    <p style="color: #7f8c8d; italic;">Nenhum aviso publicado até ao momento.</p>
+{% endif %}
+{% endblock %}
