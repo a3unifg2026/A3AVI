@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
-<div class="container">
-    <h2>Cadastrar Funcionário</h2>
-
-    <form method="POST">
-        <input name="nome" placeholder="Nome">
-        <input name="contato" placeholder="Contato">
-        <input name="setor" placeholder="Setor">
-        <input name="email" placeholder="Email">
-        <input name="cargo" placeholder="Cargo">
-        <input name="salario" placeholder="Salário">
-        <button class="btn">Cadastrar</button>
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>👤 Cadastrar Novo Funcionário</h2>
+<div class="form-container" style="max-width: 500px;">
+    <form action="/cadastrar" method="POST">
+        <label>Nome do Funcionário:</label><br>
+        <input type="text" name="nome" required><br>
+        <label>Telefone / Contato:</label><br>
+        <input type="text" name="contato" required><br>
+        <label>Setor (Tem que ser um setor válido):</label><br>
+        <input type="text" name="setor" placeholder="Ex: TI, Recursos Humanos" required><br>
+        <label>E-mail Corporativo:</label><br>
+        <input type="email" name="email" required><br>
+        <label>Cargo Atual:</label><br>
+        <input type="text" name="cargo" required><br>
+        <label>Salário Inicial (R$):</label><br>
+        <input type="number" step="0.01" name="salario" required><br><br>   
+        <input type="submit" value="Salvar no Banco de Dados">
     </form>
-
-    <a href="/home">Voltar</a>
 </div>
-
-</body>
-</html>
+{% endblock %}

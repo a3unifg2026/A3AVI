@@ -1,18 +1,15 @@
-function toggleDark() {
-    document.body.classList.toggle("dark");
+alert("Sistema de RH Interlândia iniciado com sucesso!");
+function verificarSeVaiDeletar() {
+    var conferir = confirm("Você tem certeza absoluta que deseja apagar ou demitir esse registro?");
+    if (conferir == true) {
+        return true;
+    } else {
+        return false;
+    }
 }
-
-function buscarTempoReal() {
-    let input = document.getElementById("busca").value.toLowerCase();
-    let linhas = document.querySelectorAll("table tbody tr");
-
-    linhas.forEach(linha => {
-        let nome = linha.children[1].innerText.toLowerCase();
-
-        if (nome.includes(input)) {
-            linha.style.display = "";
-        } else {
-            linha.style.display = "none";
-        }
-    });
+window.onload = function() {
+    var listaDeBotoes = document.getElementsByClassName("btn-del");
+    for (var i = 0; i < listaDeBotoes.length; i++) {
+        listaDeBotoes[i].onclick = verificarSeVaiDeletar;
+    }
 }

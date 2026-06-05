@@ -1,50 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
-<div class="container">
-    <h2>Funcionários</h2>
-
-    <table>
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>📋 Lista de Funcionários Cadastrados</h2>
+<div style="margin-bottom: 20px;">
+    <form action="/listar" method="GET">
+        <input type="text" name="busca" placeholder="Buscar por nome, ID ou setor..." style="width: 250px; padding: 5px;">
+        <button type="submit">Buscar</button>
+    </form>
+</div>
+<table>
+    <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Contato</th>
             <th>Setor</th>
-            <th>Email</th>
             <th>Cargo</th>
-            <th>Salário</th>
             <th>Status</th>
+            <th>O que fazer</th>
         </tr>
-
+    </thead>
+    <tbody>
         {% for f in funcionarios %}
-        <tr class="{% if f[7] == 'DESLIGADO' %}desligado{% endif %}">
+        <tr>
             <td>{{ f[0] }}</td>
             <td>{{ f[1] }}</td>
-            <td>{{ f[2] }}</td>
             <td>{{ f[3] }}</td>
-            <td>{{ f[4] }}</td>
             <td>{{ f[5] }}</td>
-            <td>{{ f[6] }}</td>
-            <td>{{ f[7] }}</td>
             <td>
-                <a href="/editar/{{ f[0] }}">Editar</a>
-                <a href="/desligar/{{ f[0] }}" onclick="return confirm('Tem certeza que deseja desligar este funcionário?')">
-                    Desligar
-                </a>
-                <a href="/deletar/{{ f[0] }}" onclick="return confirm('⚠️ Isso vai excluir permanentemente o funcionário. Deseja continuar?')">
-                    Excluir
-                </a>
+                <span style="font-weight: bold; color: {% if f[7] == 'ATIVO' %}green{% else %}red{% endif %};">
+                    {{ f[7] }}
+                </span>
+            </td>
+            <td>
+                <a href="/editar/{{ f[0] }}" class="btn btn-edit">Editar</a>
+                <a href="/desligar/{{ f[0] }}" class="btn btn-del">Demitir</a>
             </td>
         </tr>
         {% endfor %}
-    </table>
-
-    <a href="/home">Voltar</a>
-</div>
-
-</body>
-</html>
+    </tbody>
+</table>
+{% endblock %}

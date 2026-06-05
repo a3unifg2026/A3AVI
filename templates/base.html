@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interlândia - Gestão de RH</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block estande %}{% endblock %}
+</head>
+<body>
+    <div class="sidebar">
+        <h3>Interlândia</h3>
+        <p>Controle Interno da Empresa</p>
+        <a href="/home">🏠 Início / Home</a>
+        <a href="/cadastrar">👤 Cadastrar Novo</a>
+        <a href="/listar">📋 Lista de Funcionários</a>
+        <a href="/setores">🏢 Gerenciar Setores</a>
+        <a href="/avisos">📢 Quadro de Avisos</a>
+        <a href="/logs">🔍 Logs de Auditoria</a>
+        <a href="/resumo">📊 Resumo do Sistema</a>
+        <a href="/logout" class="logout" style="background-color: red; text-align: center; margin-top: 20px;">🚪 Sair</a>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            {% block conteudo %}{% endblock %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
