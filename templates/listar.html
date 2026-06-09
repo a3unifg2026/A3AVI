@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-<h2>📋 Lista de Funcionários Cadastrados</h2>
-<div style="margin-bottom: 20px;">
-    <form action="/listar" method="GET">
-        <input type="text" name="busca" placeholder="Buscar por nome, ID ou setor..." style="width: 250px; padding: 5px;">
-        <button type="submit">Buscar</button>
-    </form>
+<h2>Funcion&#225;rios Cadastrados</h2>
+<form action="/listar" method="GET" class="search-bar">
+    <input type="text" name="busca" placeholder="Buscar por nome, ID ou setor..." value="{{ request.args.get('busca', '') }}">
+    <input type="hidden" name="filtro" value="{{ filtro }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<div style="display: flex; gap: 8px; margin-bottom: 20px; align-items: center;">
+    <a href="/listar?filtro=todos" class="btn {% if filtro == 'todos' %}btn-primary{% else %}btn-secondary{% endif %}">Todos</a>
+    <a href="/listar?filtro=ativos" class="btn {% if filtro == 'ativos' %}btn-primary{% else %}btn-secondary{% endif %}">Ativos</a>
+    <a href="/listar?filtro=desligados" class="btn {% if filtro == 'desligados' %}btn-primary{% else %}btn-secondary{% endif %}">Desligados</a>
+    <a href="/exportar_csv" class="btn btn-secondary" style="margin-left: auto;">Exportar CSV</a>
 </div>
+
 <table>
     <thead>
         <tr>
@@ -14,8 +21,10 @@
             <th>Nome</th>
             <th>Setor</th>
             <th>Cargo</th>
+            <th>Sal&#225;rio</th>
+            <th>Admiss&#227;o</th>
             <th>Status</th>
-            <th>O que fazer</th>
+            <th>A&#231;&#245;es</th>
         </tr>
     </thead>
     <tbody>
@@ -25,17 +34,29 @@
             <td>{{ f[1] }}</td>
             <td>{{ f[3] }}</td>
             <td>{{ f[5] }}</td>
+            <td>R$ {{ "%.2f"|format(f[6] if f[6] else 0) }}</td>
+            <td>{{ f[8] or '-' }}</td>
             <td>
-                <span style="font-weight: bold; color: {% if f[7] == 'ATIVO' %}green{% else %}red{% endif %};">
+                <span class="badge {% if f[7] == 'ATIVO' %}badge-ativo{% else %}badge-desligado{% endif %}">
                     {{ f[7] }}
                 </span>
             </td>
             <td>
                 <a href="/editar/{{ f[0] }}" class="btn btn-edit">Editar</a>
-                <a href="/desligar/{{ f[0] }}" class="btn btn-del">Demitir</a>
+                {% if f[7] == 'ATIVO' %}
+                <form action="/desligar/{{ f[0] }}" method="POST" style="display:inline;" onsubmit="return confirmarAcao('Confirma o desligamento deste funcion\u00e1rio?')">
+                    <button type="submit" class="btn btn-warning">Desligar</button>
+                </form>
+                {% endif %}
+                <form action="/excluir/{{ f[0] }}" method="POST" style="display:inline;" onsubmit="return confirmarExclusao('{{ f[1] }}')">
+                    <button type="submit" class="btn btn-del">Excluir</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% if not funcionarios %}
+<p class="empty-state">Nenhum funcion&#225;rio encontrado.</p>
+{% endif %}
 {% endblock %}

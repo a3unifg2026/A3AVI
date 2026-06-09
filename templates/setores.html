@@ -1,25 +1,31 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-<h2>🏢 Gerenciar Setores da Empresa</h2>
-
-<div style="display: flex; gap: 30px; margin-top: 20px;">
-    <div style="border: 2px solid black; padding: 15px; width: 40%;">
-        <h3>Adicionar Novo Setor</h3>
-        <form action="/cadastrar_setor" method="POST">
-            <input type="text" name="nome" placeholder="Nome do Setor (Ex: Financeiro)" required style="width: 90%;">
-            <button type="submit" style="margin-top: 10px;">Adicionar</button>
-        </form>
-    </div>
-    <div style="border: 2px solid black; padding: 15px; width: 50%;">
-        <h3>Setores Criados</h3>
-        <ul style="padding-left: 20px;">
-            {% for s in setores %}
-            <li style="margin-bottom: 10px;">
-                <strong>{{ s[0] }}</strong> 
-                <a href="/excluir_setor/{{ s[0] }}" class="btn-del" style="color: red; margin-left: 20px; font-size: 12px; text-decoration: none; font-weight: bold;">[Excluir Setor]</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+<h2>Gerenciar Setores</h2>
+<form action="/cadastrar_setor" method="POST" class="search-bar" style="margin-bottom: 24px;">
+    <input type="text" name="nome" placeholder="Nome do novo setor..." required>
+    <button type="submit">Adicionar Setor</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Nome do Setor</th>
+            <th>A&#231;&#245;es</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in setores %}
+        <tr>
+            <td>{{ s[0] }}</td>
+            <td>
+                <form action="/excluir_setor/{{ s[0] }}" method="POST" style="display:inline;" onsubmit="return confirmarAcao('Deseja excluir o setor {{ s[0] }}?')">
+                    <button type="submit" class="btn btn-del">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if not setores %}
+<p class="empty-state">Nenhum setor cadastrado.</p>
+{% endif %}
 {% endblock %}

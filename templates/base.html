@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interlândia - Gestão de RH</title>
+    <title>Interl&acirc;ndia - Gest&atilde;o de RH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {% block estande %}{% endblock %}
 </head>
 <body>
     <div class="sidebar">
-        <h3>Interlândia</h3>
-        <p>Controle Interno da Empresa</p>
-        <a href="/home">🏠 Início / Home</a>
-        <a href="/cadastrar">👤 Cadastrar Novo</a>
-        <a href="/listar">📋 Lista de Funcionários</a>
-        <a href="/setores">🏢 Gerenciar Setores</a>
-        <a href="/avisos">📢 Quadro de Avisos</a>
-        <a href="/logs">🔍 Logs de Auditoria</a>
-        <a href="/resumo">📊 Resumo do Sistema</a>
-        <a href="/logout" class="logout" style="background-color: red; text-align: center; margin-top: 20px;">🚪 Sair</a>
+        <div class="sidebar-header">
+            <h3>Interl&#226;ndia</h3>
+            <p>Gest&#227;o de RH</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/home">In&#237;cio</a>
+            <a href="/cadastrar">Cadastrar</a>
+            <a href="/listar">Funcion&#225;rios</a>
+            <a href="/setores">Setores</a>
+            <a href="/avisos">Avisos</a>
+            <a href="/logs">Logs de Auditoria</a>
+            <a href="/resumo">Resumo</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-icon">&#9789;</span> <span id="theme-text">Tema Escuro</span>
+            </button>
+            <a href="/logout" class="logout-btn">Sair do Sistema</a>
+        </div>
     </div>
     <div class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <div class="container">
             {% block conteudo %}{% endblock %}
         </div>

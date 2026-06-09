@@ -1,21 +1,39 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-<h2>👤 Cadastrar Novo Funcionário</h2>
-<div class="form-container" style="max-width: 500px;">
-    <form action="/cadastrar" method="POST">
-        <label>Nome do Funcionário:</label><br>
-        <input type="text" name="nome" required><br>
-        <label>Telefone / Contato:</label><br>
-        <input type="text" name="contato" required><br>
-        <label>Setor (Tem que ser um setor válido):</label><br>
-        <input type="text" name="setor" placeholder="Ex: TI, Recursos Humanos" required><br>
-        <label>E-mail Corporativo:</label><br>
-        <input type="email" name="email" required><br>
-        <label>Cargo Atual:</label><br>
-        <input type="text" name="cargo" required><br>
-        <label>Salário Inicial (R$):</label><br>
-        <input type="number" step="0.01" name="salario" required><br><br>   
-        <input type="submit" value="Salvar no Banco de Dados">
-    </form>
-</div>
+<h2>Cadastrar Novo Funcion&#225;rio</h2>
+<form action="/cadastrar" method="POST" style="max-width: 520px;" id="formCadastro">
+    <div class="form-group">
+        <label>Nome Completo:</label>
+        <input type="text" name="nome" id="nome" required minlength="3" placeholder="Ex: Jo&#227;o da Silva">
+        <span class="error-msg" id="erro-nome">Informe o nome completo (m&#237;nimo 3 caracteres).</span>
+    </div>
+    <div class="form-group">
+        <label>Telefone / Contato:</label>
+        <input type="tel" name="contato" id="contato" required placeholder="(00) 00000-0000" maxlength="15">
+        <span class="hint">Formato: (81) 99999-9999</span>
+        <span class="error-msg" id="erro-contato">Informe um telefone v&#225;lido com DDD.</span>
+    </div>
+    <div class="form-group">
+        <label>Setor:</label>
+        <input type="text" name="setor" id="setor" required placeholder="Deve ser um setor j&#225; cadastrado">
+        <span class="hint">O setor precisa estar previamente cadastrado na &#225;rea de Setores.</span>
+    </div>
+    <div class="form-group">
+        <label>E-mail Corporativo:</label>
+        <input type="email" name="email" id="email" required placeholder="exemplo@empresa.com">
+        <span class="error-msg" id="erro-email">Informe um e-mail v&#225;lido.</span>
+    </div>
+    <div class="form-group">
+        <label>Cargo:</label>
+        <input type="text" name="cargo" id="cargo" required placeholder="Ex: Analista de Sistemas">
+    </div>
+    <div class="form-group">
+        <label>Sal&#225;rio Inicial (R$):</label>
+        <input type="text" name="salario" id="salario" required placeholder="0,00" inputmode="decimal">
+        <span class="hint">Utilize v&#237;rgula para centavos. Ex: 3500,00</span>
+        <span class="error-msg" id="erro-salario">Informe um valor num&#233;rico v&#225;lido.</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar Funcion&#225;rio</button>
+    <a href="/listar" class="btn btn-secondary" style="margin-left: 10px;">Cancelar</a>
+</form>
 {% endblock %}

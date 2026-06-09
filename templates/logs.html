@@ -1,35 +1,48 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid black; padding-bottom: 10px;">
-    <h2 style="margin: 0;">🔍 Logs de Auditoria do Sistema</h2>
-    <a href="/limpar_logs" onclick="return confirm('Aviso: Isso vai apagar todo o histórico de logs para sempre! Quer continuar mesmo?')" style="background: red; color: white; text-decoration: none; padding: 10px; font-weight: bold; border: 1px solid black;">🧹 Limpar Tudo</a>
+<h2>Logs de Auditoria</h2>
+<div style="margin-bottom: 20px;">
+    <form action="/limpar_logs" method="POST" style="display:inline;" onsubmit="return confirmarAcao('Tem certeza que deseja limpar todos os registros de auditoria?')">
+        <button type="submit" class="btn btn-del">Limpar Logs</button>
+    </form>
 </div>
+
+{% if logs %}
 <table>
     <thead>
         <tr>
-            <th>ID Log</th>
-            <th>ID Funcionário</th>
-            <th>Ação Que Fez</th>
-            <th>Quem Fez (Usuário)</th>
-            <th>Data e Hora</th>
+            <th>ID</th>
+            <th>Descri&#231;&#227;o</th>
+            <th>A&#231;&#227;o</th>
+            <th>Respons&#225;vel</th>
+            <th>Data/Hora</th>
         </tr>
     </thead>
     <tbody>
-        {% if logs %}
-            {% for log in logs %}
-            <tr>
-                <td>#{{ log[0] }}</td>
-                <td>{{ log[1] }}</td>
-                <td><strong>{{ log[2] }}</strong></td>
-                <td>{{ log[3] }}</td>
-                <td>{{ log[4] }}</td>
-            </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="5" style="text-align: center; color: gray; padding: 20px;">Nenhum registro de log encontrado no banco de dados ainda.</td>
-            </tr>
-        {% endif %}
+        {% for l in logs %}
+        <tr>
+            <td>{{ l[0] }}</td>
+            <td>{{ l[1] }}</td>
+            <td>
+                <span class="log-action
+                    {%- if 'CADASTRO' in l[2] %} log-cadastro
+                    {%- elif 'ATUALIZOU' in l[2] %} log-atualizou
+                    {%- elif 'CRIOU' in l[2] %} log-cadastro
+                    {%- elif 'EXCLUIU' in l[2] %} log-desligou
+                    {%- elif 'DESLIGOU' in l[2] %} log-desligou
+                    {%- elif 'PUBLICOU' in l[2] %} log-atualizou
+                    {%- elif 'EXPORTOU' in l[2] %} log-atualizou
+                    {%- else %} log-atualizou{% endif %}">
+                    {{ l[2] }}
+                </span>
+            </td>
+            <td>{{ l[3] }}</td>
+            <td>{{ l[4] }}</td>
+        </tr>
+        {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p class="empty-state">Nenhum registro de auditoria encontrado.</p>
+{% endif %}
 {% endblock %}
